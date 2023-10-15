@@ -1,0 +1,30 @@
+<div mat-dialog-title class="custom-dialog-title">
+  <h2>{{ modalData.type }} - {{ modalData.title }}</h2>
+  <button
+    mat-icon-button
+    aria-label="Close"
+    mat-dialog-close
+    [disabled]="modalData.isSaveLoading"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<form
+  class="custom-form"
+  autocomplete="off"
+  [formGroup]="dialogForm"
+  (ngSubmit)="saveDialog()"
+>
+  <mat-dialog-content>
+    <div class="form-group">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Title your activity</mat-label>
+        <input matInput formControlName="title" type="text" />
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-dialog-close mat-stroked-button>Cancel</button>
+    <button mat-flat-button color="primary" type="submit">Save</button>
+  </mat-dialog-actions>
+</form>

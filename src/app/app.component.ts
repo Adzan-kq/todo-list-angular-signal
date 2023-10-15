@@ -67,7 +67,7 @@ export class AppComponent {
 
     this.dialogRef.componentInstance.saveHandler.subscribe((result) => {
       this.listTodo.mutate((todo) => {
-        if (result.title) {
+        if (result.title || result.content) {
           todo.push({
             id: uuid(),
             title: result.title,

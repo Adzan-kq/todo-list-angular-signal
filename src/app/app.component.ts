@@ -21,7 +21,6 @@ import { v4 as uuid } from 'uuid';
 interface TodoList {
   id: string;
   title: string;
-  subTitle?: string;
   content: string;
 }
 
@@ -57,8 +56,7 @@ export class AppComponent {
   openDialogCreate() {
     const dialogConfig = DialogListFormComponentConfig;
     dialogConfig.data = {
-      type: 'create',
-      title: 'List Activity',
+      type: 'Create',
     };
 
     this.dialogRef = this.dialog.open(DialogListFormComponent, dialogConfig);
@@ -73,10 +71,51 @@ export class AppComponent {
           todo.push({
             id: uuid(),
             title: result.title,
-            content: '',
+            content: result.content,
           });
         }
       });
+    });
+  }
+
+  openDialogUpdate(item: TodoList) {
+    const dialogConfig = DialogListFormComponentConfig;
+    dialogConfig.data = {
+      type: 'Update',
+      title: 'Task',
+      data: item,
+    };
+
+    this.dialogRef = this.dialog.open(DialogListFormComponent, dialogConfig);
+
+    this.dialogRef.afterClosed().subscribe((result) => {
+      this.dialogRef.componentInstance.saveHandler.unsubscribe();
+    });
+
+    this.dialogRef.componentInstance.saveHandler.subscribe((result) => {
+      this.listTodo.mutate((todo) => {
+        if (result.title) {
+          // Temukan indeks item yang sesuai
+          const index = todo.findIndex((todoItem) => todoItem.id === item.id);
+          if (index !== -1) {
+            // Perbarui item dengan data yang baru
+            todo[index] = {
+              id: item.id,
+              title: result.title,
+              content: result.content,
+            };
+          }
+        }
+      });
+    });
+  }
+
+  deleteItem(item: TodoList) {
+    this.listTodo.mutate((todo) => {
+      const index = todo.findIndex((todoItem) => todoItem.id === item.id);
+      if (index !== -1) {
+        todo.splice(index, 1);
+      }
     });
   }
 }

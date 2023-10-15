@@ -1,5 +1,43 @@
 .custom-dialog {
   &-title {
-    width: 720px;
+    width: 520px;
+    position: relative;
+    border-bottom: 1px solid gray;
+
+    h2 {
+      margin-bottom: 12px;
+      position: absolute;
+      top: 14px;
+      left: 24px;
+    }
+
+    *[mat-dialog-close] {
+      position: absolute;
+      right: 24px;
+      top: 8px;
+    }
   }
+
+  &-content {
+    padding: 20px 24px 28px;
+    .form-group {
+      margin-bottom: 14px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .custom-input {
+        width: 100%;
+
+        textarea {
+          min-height: 120px;
+        }
+      }
+    }
+  }
+}
+
+.button-action {
+  padding: 20px 25px;
 }

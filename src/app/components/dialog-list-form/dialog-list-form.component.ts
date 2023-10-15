@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
@@ -19,9 +19,12 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 
 interface DialogDataProps {
-  type: 'create' | 'update';
-  title: string;
-  isSaveLoading?: boolean;
+  type: 'Create' | 'Update';
+  data?: {
+    id: string;
+    title: string;
+    content: string;
+  };
 }
 
 export const DialogListFormComponentConfig: MatDialogConfig = {
@@ -45,7 +48,7 @@ export const DialogListFormComponentConfig: MatDialogConfig = {
   templateUrl: './dialog-list-form.component.html',
   styleUrls: ['./dialog-list-form.component.scss'],
 })
-export class DialogListFormComponent {
+export class DialogListFormComponent implements OnInit {
   @Output() saveHandler: EventEmitter<any> = new EventEmitter<any>();
 
   modalData: DialogDataProps;
@@ -60,16 +63,23 @@ export class DialogListFormComponent {
 
     this.dialogForm = this.fb.group({
       title: [''],
+      content: [''],
     });
+  }
+
+  ngOnInit(): void {
+    if (this.modalData.type === 'Update' && this.modalData.data) {
+      this.dialogForm.patchValue({
+        title: this.modalData.data.title,
+        content: this.modalData.data.content,
+      });
+    }
   }
 
   saveDialog() {
     if (this.dialogForm.valid) {
-      if (this.modalData.isSaveLoading === undefined) {
-        this.dialogRef.close({ save: true });
-      }
-
       this.saveHandler.emit(this.dialogForm.value);
+      this.dialogRef.close();
     }
   }
 }

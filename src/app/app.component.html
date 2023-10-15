@@ -6,17 +6,16 @@
       <mat-card-header>
         <mat-card-title-group>
           <mat-card-title>{{ item.title }}</mat-card-title>
-          <mat-card-subtitle>{{ item.subTitle }}</mat-card-subtitle>
           <button mat-icon-button [matMenuTriggerFor]="more">
             <mat-icon fontIcon="more_vert"></mat-icon>
           </button>
 
           <mat-menu #more="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="openDialogUpdate(item)">
               <mat-icon fontIcon="edit" color="primary"></mat-icon>
               <span>edit</span>
             </button>
-            <button mat-menu-item>
+            <button mat-menu-item (click)="deleteItem(item)">
               <mat-icon fontIcon="delete" color="warn"></mat-icon>
               <span>delete</span>
             </button>
